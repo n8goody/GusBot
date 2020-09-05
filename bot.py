@@ -1,25 +1,23 @@
 import discord
 from discord.ext import commands
-import csv
-from csv import DictReader
 import random
 
-roomNameWordFile = 'lamoJuanYouGay.csv'
+adjectivesFile = 'rcAdjectives.txt'
+nounsFile = 'rcNouns.txt'
+verbsFile = 'rcVerbs.txt'
 
 bot = commands.Bot(command_prefix = 'g!')
 
 # creates dictionary of lists, each list a different letter, for genRoomName from csv file
-def loadRoomName(filename):
-    from csv import DictReader
-    with open(filename, newline='') as csvfile:
-        csvReader = csv.reader(csvfile)
-        wordDict = {}
-        for line in csvReader:
-            wordList = []
-            for word in line:
-                if len(word)>1:
-                    wordList.append(word)
-            wordDict[line[0]] = (wordList)
+def fileToDict(filename):
+    wordDict = {}
+    with open(filename, newline='') as txtfile:
+        reader = txtfile.read().splitlines()
+        for line in reader:
+            if line[0] not in wordDict:
+                wordDict[line[0]] = [line]
+            else:
+                wordDict[line[0]].append(line)
     return wordDict
             
 
@@ -27,16 +25,41 @@ def loadRoomName(filename):
 async def on_ready():
     print("Bot is ready")
 
+
+
 @bot.command(name = 'grn')
 async def genRoomName(ctx, arg):
     roomCode = str(arg).strip().upper()
     if len(roomCode) == 4 and roomCode.isalpha():
         roomPhrase = ''
-        roomNameDict = loadRoomName(roomNameWordFile)
-        for char in roomCode:
-            listLen = len(roomNameDict[char])
-            randNum = random.randint(0,listLen-1)
-            roomPhrase += roomNameDict[char][randNum] + ' '
+        adjDict = fileToDict(adjectivesFile)
+        nounDict = fileToDict(nounsFile)
+        verbDict = fileToDict(verbsFile)
+
+        #noun
+        char = roomCode[0]
+        listLen = len(nounDict[char])
+        randNum = random.randint(0,listLen-1)
+        roomPhrase += nounDict[char][randNum] + ' '
+
+        #verb
+        char = roomCode[1]
+        listLen = len(verbDict[char])
+        randNum = random.randint(0,listLen-1)
+        roomPhrase += verbDict[char][randNum] + ' '
+
+        #adj
+        char = roomCode[2]
+        listLen = len(adjDict[char])
+        randNum = random.randint(0,listLen-1)
+        roomPhrase += adjDict[char][randNum] + ' '
+
+        #noun
+        char = roomCode[3]
+        listLen = len(nounDict[char])
+        randNum = random.randint(0,listLen-1)
+        roomPhrase += nounDict[char][randNum] + ' '
+
         await ctx.send('The room code is '+ roomPhrase, tts=True)
         
     else:
