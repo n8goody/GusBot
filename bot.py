@@ -28,6 +28,27 @@ async def on_ready():
     print("Bot is ready")
 
 @bot.command()
+async def addWords(ctx, type, *words):
+    if (len(words)<1):
+        ctx.send("Please include words you wish to add.")
+    t = str(type).strip().upper()
+    if t =='N':
+        typeFile = 'rcNouns.txt'
+    elif t == 'A':
+        typeFile ='rcAdjectives.txt'
+    elif t == 'V':
+        typeFile = 'rcVerbs.txt'
+    else:
+        await ctx.send("Invalid Type. Valid types: N = nouns; A = Adjectives; V = Verbs")
+        return
+    with open(typeFile, "a") as txtfile:
+        for word in words:
+            txtfile.write('\n' + word)
+    await ctx.send("Words succesfully added")
+    
+
+
+@bot.command()
 async def toggleTTS(ctx):
     global isTTSon
     if isTTSon:
