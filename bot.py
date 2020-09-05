@@ -19,7 +19,7 @@ def fileToDict(filename):
             if line[0] not in wordDict:
                 wordDict[line[0]] = [line]
             else:
-                wordDict[line[0]].append(line)
+                wordDict[line[0].upper()].append(line.capitalize())
     return wordDict
             
 
@@ -43,7 +43,7 @@ async def addWords(ctx, type, *words):
         return
     with open(typeFile, "a") as txtfile:
         for word in words:
-            txtfile.write('\n' + word)
+            txtfile.write('\n' + word.capitalize())
     await ctx.send("Words succesfully added")
     
 
