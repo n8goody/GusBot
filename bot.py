@@ -40,7 +40,7 @@ async def genRoomName(ctx, arg):
         await ctx.send('The room code is '+ roomPhrase, tts=True)
         
     else:
-        await ctx.send("Room Code must be exactly 4 letters (no letters/special characters)")
+        await ctx.send("Room Code must be exactly 4 letters (no numbers/special characters)")
         
 
 bot.run('NzUxNjIwNzk1NjE2NDYwODYw.X1Lvag.aRIKMXBmgQbrqQDIhchtaSort_0')
