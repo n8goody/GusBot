@@ -6,9 +6,9 @@ import random
 
 roomNameWordFile = 'lamoJuanYouGay.csv'
 
-bot = commands.Bot(command_prefix = '.')
+bot = commands.Bot(command_prefix = 'g!')
 
-# parses csv file for genRoomName function
+# creates dictionary of lists, each list a different letter, for genRoomName from csv file
 def loadRoomName(filename):
     from csv import DictReader
     with open(filename, newline='') as csvfile:
@@ -31,14 +31,13 @@ async def on_ready():
 async def genRoomName(ctx, arg):
     roomCode = str(arg).strip().upper()
     if len(roomCode) == 4 and roomCode.isalpha():
-        await ctx.send("Success")
         roomPhrase = ''
         roomNameDict = loadRoomName(roomNameWordFile)
         for char in roomCode:
             listLen = len(roomNameDict[char])
             randNum = random.randint(0,listLen-1)
             roomPhrase += roomNameDict[char][randNum] + ' '
-        await ctx.send('The room code is '+ roomPhrase)
+        await ctx.send('The room code is '+ roomPhrase, tts=True)
         
     else:
         await ctx.send("Room Code must be exactly 4 letters (no letters/special characters)")
