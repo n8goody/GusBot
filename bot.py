@@ -13,6 +13,8 @@ bot = commands.Bot(command_prefix = 'g!')
 # creates dictionary of lists, each list a different letter, for genRoomName from csv file
 def fileToDict(filename):
     wordDict = {}
+    for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+        wordDict[letter] = []
     with open(filename, newline='') as txtfile:
         reader = txtfile.read().splitlines()
         for line in reader:
