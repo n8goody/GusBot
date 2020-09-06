@@ -10,7 +10,7 @@ isTTSon = True
 
 bot = commands.Bot(command_prefix = 'g!')
 
-# creates dictionary of lists, each list a different letter, for genRoomName from csv file
+# creates dictionary of lists, each list a different letter, for genRoomName from text file
 def fileToDict(filename):
     wordDict = {}
     for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
@@ -24,6 +24,16 @@ def fileToDict(filename):
                 wordDict[line[0].upper()].append(line.capitalize())
     return wordDict
             
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument) or isinstance(error, commands.CommandNotFound):
+        await ctx.send(ctx.message.author.mention + ' ' + error.args[0])
+    else:
+        await ctx.send(ctx.message.author.mention + ' ' + 'Programing/unhandled error. Notifying n8...')
+        user = await bot.fetch_user('115981201428185094')
+        await user.send("Message: {}\nUser: {}\nChannel: {}\nError: {}".format(ctx.message.content, ctx.author.name, ctx.message.channel.name, error.args[0]))
+
+
 
 @bot.event
 async def on_ready():
@@ -41,7 +51,7 @@ async def addWords(ctx, type, *words):
     elif t == 'V':
         typeFile = 'rcVerbs.txt'
     else:
-        await ctx.send("Invalid Type. Valid types: N = nouns; A = Adjectives; V = Verbs")
+        await ctx.send(ctx.message.author.mention + " Invalid Type. Valid types: N = nouns; A = Adjectives; V = Verbs")
         return
     with open(typeFile, "a") as txtfile:
         for word in words:
@@ -75,7 +85,7 @@ async def wordList(ctx, type, letter):
         typeFile = 'rcVerbs.txt'
         wordType = "Verbs"
     else:
-        await ctx.send("Invalid Type. Valid types: N = nouns; A = Adjectives; V = Verbs")
+        await ctx.send(ctx.message.author.mention + " Invalid Type. Valid types: N = nouns; A = Adjectives; V = Verbs")
         return
 
     if (not l.isalpha() and  not l =='%'):
