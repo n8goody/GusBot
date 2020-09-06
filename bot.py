@@ -64,12 +64,16 @@ async def toggleTTS(ctx):
 async def wordList(ctx, type, letter):
     l = str(letter).strip().upper()
     t = str(type).strip().upper()
+    wordType = ''
     if t =='N':
         typeFile = 'rcNouns.txt'
+        wordType = "Nouns"
     elif t == 'A':
         typeFile ='rcAdjectives.txt'
+        wordType = "Adjectives"
     elif t == 'V':
         typeFile = 'rcVerbs.txt'
+        wordType = "Verbs"
     else:
         await ctx.send("Invalid Type. Valid types: N = nouns; A = Adjectives; V = Verbs")
         return
@@ -79,7 +83,7 @@ async def wordList(ctx, type, letter):
         return
     if l == '%':
         typeDict = fileToDict(typeFile)
-        output = ''
+        output = wordType + ":\n"
         for key in typeDict:
             output += key + ': '
             for word in typeDict[key]:
