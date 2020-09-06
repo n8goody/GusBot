@@ -111,7 +111,7 @@ async def shitpost(ctx, arg):
             listLen = len(nounDict[char])
             randNum = random.randint(0,listLen-1)
             spPhrase += nounDict[char][randNum] + ' '
-        if i % 3 == 1: #verb
+        if i % 3 == 2: #verb
             listLen = len(verbDict[char])
             randNum = random.randint(0,listLen-1)
             spPhrase += verbDict[char][randNum] + ' '
