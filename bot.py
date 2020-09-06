@@ -91,7 +91,32 @@ async def wordList(ctx, type, letter):
             output += word + ' '
         await ctx.send(output) 
 
-
+@bot.command()
+async def shitpost(ctx, arg):
+    spCode = str(arg.strip().upper())
+    if not spCode.isalpha:
+        await ctx.send("Must be letters. No special characters/numbers")
+        return
+    adjDict = fileToDict(adjectivesFile)
+    nounDict = fileToDict(nounsFile)
+    verbDict = fileToDict(verbsFile)
+    spPhrase = ''
+    i = 0
+    for char in spCode:
+        if i % 3 == 0: #adj
+            listLen = len(adjDict[char])
+            randNum = random.randint(0,listLen-1)
+            spPhrase += adjDict[char][randNum] + ' '
+        if i % 3 == 1: #noun
+            listLen = len(nounDict[char])
+            randNum = random.randint(0,listLen-1)
+            spPhrase += nounDict[char][randNum] + ' '
+        if i % 3 == 1: #verb
+            listLen = len(verbDict[char])
+            randNum = random.randint(0,listLen-1)
+            spPhrase += verbDict[char][randNum] + ' '
+        i += 1
+    await ctx.send(spPhrase, tts=isTTSon)
 
 @bot.command(name = 'grn')
 async def genRoomName(ctx, arg):
